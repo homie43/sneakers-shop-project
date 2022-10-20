@@ -1,21 +1,23 @@
+import { useState } from "react";
+
 import Card from "./components/Card/Card";
 import Drawer from "./components/Drawer";
 import Header from "./components/Header";
 
+const Array = [
+  {title: "Мужские Кроссовки Nike Blazer Mid Suede", price: 12900, imageUrl: '/img/sneakers/1.jpg'},
+  {title: "Мужские Кроссовки Nike Air Max 270", price: 12900, imageUrl: '/img/sneakers/2.jpg'},
+  {title: "Мужские Кроссовки Nike Blazer Mid Suede", price: 8400, imageUrl: '/img/sneakers/3.jpg'},
+  {title: "Кроссовки Puma X Aka Boku Future Rider", price: 8900, imageUrl: '/img/sneakers/4.jpg'}
+];
 
 function App() {
-  const Array = [
-    {title: "Мужские Кроссовки Nike Blazer Mid Suede", price: 12900, imageUrl: '/img/sneakers/1.jpg'},
-    {title: "Мужские Кроссовки Nike Air Max 270", price: 12900, imageUrl: '/img/sneakers/2.jpg'},
-    {title: "Мужские Кроссовки Nike Blazer Mid Suede", price: 8400, imageUrl: '/img/sneakers/3.jpg'},
-    {title: "Кроссовки Puma X Aka Boku Future Rider", price: 8900, imageUrl: '/img/sneakers/4.jpg'}
-  ]
+  const [cartOpened, setCartOpened] = useState(false);
 
   return (
     <div className="wrapper clear">
-      <Drawer/>
-      <Header/>
-
+      {cartOpened ? <Drawer onCloseCart={() => setCartOpened(false)}/> : null}
+      <Header onClickCart={() => setCartOpened(true)} />
       <div className="contetnt p-40">
         <div className="d-flex align-center justify-between mb-40">
           <h1 className="mb-40">Все кроссовки</h1>
