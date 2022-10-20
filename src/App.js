@@ -1,22 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Card from "./components/Card/Card";
 import Drawer from "./components/Drawer";
 import Header from "./components/Header";
 
-const Array = [
-  {title: "Мужские Кроссовки Nike Blazer Mid Suede", price: 12900, imageUrl: '/img/sneakers/1.jpg'},
-  {title: "Мужские Кроссовки Nike Air Max 270", price: 12900, imageUrl: '/img/sneakers/2.jpg'},
-  {title: "Мужские Кроссовки Nike Blazer Mid Suede", price: 8400, imageUrl: '/img/sneakers/3.jpg'},
-  {title: "Кроссовки Puma X Aka Boku Future Rider", price: 8900, imageUrl: '/img/sneakers/4.jpg'}
-];
 
 function App() {
+  const [items, setItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [cartOpened, setCartOpened] = useState(false);
+
+  useEffect(() => {
+    fetch("https://6350fd33dfe45bbd55b37a6e.mockapi.io/items")
+      .then(res => {
+        return res.json();
+    }).then(json => {
+        setItems(json);
+    });
+  }, []);
+
+  const onAddToCart = (obj) => {
+    setCartItems(prev => [...prev, obj])
+  };
 
   return (
     <div className="wrapper clear">
-      {cartOpened ? <Drawer onCloseCart={() => setCartOpened(false)}/> : null}
+      {cartOpened ? <Drawer items={cartItems} onCloseCart={() => setCartOpened(false)}/> : null}
       <Header onClickCart={() => setCartOpened(true)} />
       <div className="contetnt p-40">
         <div className="d-flex align-center justify-between mb-40">
@@ -27,20 +36,18 @@ function App() {
           </div>
         </div>
 
-        <div className="d-flex">
-
-          {Array.map(obj => (
+        <div className="d-flex flex-wrap">
+          {items.map(item => (
             <Card
-            title={obj.title}
-            price={obj.price}
-            imageUrl={obj.imageUrl}
-          />
+              title={item.title}
+              price={item.price}
+              imageUrl={item.imageUrl}
+              onFavorite={() => console.log('Добавили в закладки')}
+              onPluse={(obj) => onAddToCart(obj)}
+            />
           ))}
-
         </div>
-
       </div>
-    
     </div>
   )
 }
