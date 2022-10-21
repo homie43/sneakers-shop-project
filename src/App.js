@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { Switch, Route } from 'react-router-dom';
 
-import Card from "./components/Card/Card";
 import Drawer from "./components/Drawer";
 import Header from "./components/Header";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
 
 
 function App() {
@@ -31,6 +33,11 @@ function App() {
         setCartItems(res.data)
       }
     );
+    axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites")
+      .then(res => {
+        setFavorites(res.data)
+      }
+    );
   }, []);
 
   const onAddToCart = (obj) => {
@@ -38,9 +45,19 @@ function App() {
     setCartItems(prev => [...prev, obj])
   };
 
-  const onAddFavorite = (obj) => {
-    axios.post("https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites", obj);
-    setFavorites(prev => [...prev, obj])
+  const onAddFavorite = async (obj) => {
+    try {
+      if(favorites.find(favObj => favObj.id == obj.id)) {
+        axios.delete(`https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites/${obj.id}`);
+        // setFavorites(prev => prev.filter(item => item.id !== obj.id)); // из апи удаляю, но на старнице сотается, если наоборот, то при удалении из апи, удалится со страницы
+      } else {
+        const {data} = await axios.post("https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites", obj);
+        setFavorites(prev => [...prev, data]);
+      }
+    } catch (e) {
+      alert('Не удалось добавить в избранное')
+    }
+    
   };
 
   const onRemoveItemToCart = (id) => {
@@ -58,28 +75,20 @@ function App() {
       {cartOpened ? <Drawer onRemoveItemToCart={onRemoveItemToCart} items={cartItems} onCloseCart={() => setCartOpened(false)}/> : null}
       <Header onClickCart={() => setCartOpened(true)} />
 
-      <div className="contetnt p-40">
-        <div className="d-flex align-center justify-between mb-40">
-          <h1 className="mb-40">{searchValue ? `Поиск по запросу: ${searchValue}` : 'Все кроссовки'}</h1>
-          <div className="search-block">
-            <img src="/img/search.svg" alt="Search" />
-            <input onChange={onChangeSearchInput} placeholder="Поиск..." />
-          </div>
-        </div>
+      <Route path="/" exact>
+        <Home 
+          items={items} 
+          searchValue={searchValue} 
+          setSearchValue={setSearchValue} 
+          onChangeSearchInput={onChangeSearchInput}
+          onAddFavorite={onAddFavorite}
+          onAddToCart={onAddToCart}
+        />
+      </Route>
+      <Route to="/favorites">
+        <Favorites favorites={favorites} onAddFavorite={onAddFavorite}/>
+      </Route>
 
-        <div className="d-flex flex-wrap">
-          {items.filter((item) => item.title.toLowerCase().includes(searchValue)).map((item, index) => (
-            <Card
-              key={index}
-              title={item.title}
-              price={item.price}
-              imageUrl={item.imageUrl}
-              onAddFavorite={(obj) => onAddFavorite(obj)}
-              onPluse={(obj) => onAddToCart(obj)}
-            />
-          ))}
-        </div>
-      </div>
     </div>
   )
 }
