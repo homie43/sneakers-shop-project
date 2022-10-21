@@ -10,14 +10,14 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
                     <>
                         <div className="items">
                             {items.map((obj) => (
-                            <div className="cartItem d-flex align-center mb-20">
-                                <div style={{backgroundImage: `url(${obj.imageUrl})`}} className="cartItemImg"></div>
-                                <div className="mr-20">
-                                    <p className="mb-5">{obj.title}</p>
-                                    <b>{obj.price} руб.</b>
+                                <div key={obj.id} className="cartItem d-flex align-center mb-20">
+                                    <div style={{backgroundImage: `url(${obj.imageUrl})`}} className="cartItemImg"></div>
+                                    <div className="mr-20">
+                                        <p className="mb-5">{obj.title}</p>
+                                        <b>{obj.price} руб.</b>
+                                    </div>
+                                    <img onClick={() => onRemoveItemToCart(obj.id)} className="removeBtn" src="/img/btn-remove.svg" alt="Remove" />
                                 </div>
-                                <img onClick={() => onRemoveItemToCart(obj.id)} className="removeBtn" src="/img/btn-remove.svg" alt="Remove" />
-                            </div>
                             ))} 
                         </div>
                         <div className="cartTotalBlock">
@@ -40,10 +40,10 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
                     </>
                 : 
                     <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-                        <img class="mb-20" width="120px" height="120px" src="/img/empty-cart.jpg" alt="EmptyCart" />
+                        <img className="mb-20" width="120px" height="120px" src="/img/empty-cart.jpg" alt="EmptyCart" />
                         <h2>Пустая корзина</h2>
-                        <p class="opacity-6">Добавьте хотя бы одну пару кроссовок</p>
-                        <button onClick={onCloseCart} class="myButton">
+                        <p className="opacity-6">Добавьте хотя бы одну пару кроссовок</p>
+                        <button onClick={onCloseCart} className="myButton">
                             <img src="/img/arrow.svg" alt="Arrow" />
                             Вернуться назад
                         </button>

@@ -14,6 +14,7 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [cartOpened, setCartOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // fetch("https://6350fd33dfe45bbd55b37a6e.mockapi.io/items")
@@ -23,41 +24,43 @@ function App() {
     //     setItems(json);
     // });
 
-    axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/items")
-      .then(res => {
-        setItems(res.data)
-      }
-    );
-    axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart")
-      .then(res => {
-        setCartItems(res.data)
-      }
-    );
-    axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites")
-      .then(res => {
-        setFavorites(res.data)
-      }
-    );
+    async function fetchData() {
+      // setIsLoading(false); // если переиспользуется
+      const cartResponse = await axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart");
+      const favoritesResponse = await axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites");
+      const itemsResponse = await axios.get("https://6350fd33dfe45bbd55b37a6e.mockapi.io/items");
+
+      setIsLoading(false);
+
+      setCartItems(cartResponse.data);
+      setFavorites(favoritesResponse.data);
+      setItems(itemsResponse.data);
+    }
+    fetchData();
   }, []);
 
   const onAddToCart = (obj) => {
-    axios.post("https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart", obj);
-    setCartItems(prev => [...prev, obj])
+    if(cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+      axios.delete(`https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart/${obj.id}`);
+      setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)));
+    } else {
+      axios.post("https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart", obj);
+      setCartItems(prev => [...prev, obj]);
+    }
   };
 
   const onAddFavorite = async (obj) => {
     try {
-      if(favorites.find(favObj => favObj.id == obj.id)) {
+      if(favorites.find((favObj) => favObj.id === obj.id)) {
         axios.delete(`https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites/${obj.id}`);
-        // setFavorites(prev => prev.filter(item => item.id !== obj.id)); // из апи удаляю, но на старнице сотается, если наоборот, то при удалении из апи, удалится со страницы
+        setFavorites(prev => prev.filter(item => Number(item.id) !== Number(obj.id))); // из апи удаляю, но на старнице сотается, если наоборот, то при удалении из апи, удалится со страницы
       } else {
         const {data} = await axios.post("https://6350fd33dfe45bbd55b37a6e.mockapi.io/favorites", obj);
-        setFavorites(prev => [...prev, data]);
+        setFavorites((prev) => [...prev, data]);
       }
     } catch (e) {
-      alert('Не удалось добавить в избранное')
+      console.log(e)
     }
-    
   };
 
   const onRemoveItemToCart = (id) => {
@@ -73,21 +76,26 @@ function App() {
     <div className="wrapper clear">
 
       {cartOpened ? <Drawer onRemoveItemToCart={onRemoveItemToCart} items={cartItems} onCloseCart={() => setCartOpened(false)}/> : null}
+      
       <Header onClickCart={() => setCartOpened(true)} />
 
-      <Route path="/" exact>
-        <Home 
-          items={items} 
-          searchValue={searchValue} 
-          setSearchValue={setSearchValue} 
-          onChangeSearchInput={onChangeSearchInput}
-          onAddFavorite={onAddFavorite}
-          onAddToCart={onAddToCart}
-        />
-      </Route>
-      <Route to="/favorites">
-        <Favorites favorites={favorites} onAddFavorite={onAddFavorite}/>
-      </Route>
+      <Switch>
+        <Route path="/" exact>
+          <Home 
+            items={items}
+            cartItems={cartItems} 
+            searchValue={searchValue} 
+            setSearchValue={setSearchValue} 
+            onChangeSearchInput={onChangeSearchInput}
+            onAddFavorite={onAddFavorite}
+            onAddToCart={onAddToCart}
+            isLoading={isLoading}
+          />
+        </Route>
+        <Route to="/favorites">
+          <Favorites favorites={favorites} onAddFavorite={onAddFavorite}/>
+        </Route>
+      </Switch>
 
     </div>
   )
