@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Info from './Info';
 
 const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
+    const [isOrderComplete, setIsOrderComplete] = useState(false)
     return (
         <div className="overlay">
             <div className="drawer">
@@ -39,15 +41,11 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
                         </div>
                     </>
                 : 
-                    <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-                        <img className="mb-20" width="120px" height="120px" src="/img/empty-cart.jpg" alt="EmptyCart" />
-                        <h2>Пустая корзина</h2>
-                        <p className="opacity-6">Добавьте хотя бы одну пару кроссовок</p>
-                        <button onClick={onCloseCart} className="myButton">
-                            <img src="/img/arrow.svg" alt="Arrow" />
-                            Вернуться назад
-                        </button>
-                    </div>
+                    <Info 
+                        title="Корзина пустая" 
+                        description="Добавьте хотя бы одну пару кроссовок" 
+                        image="/img/empty-cart.jpg
+                    "/>
                 }
 
             </div>
