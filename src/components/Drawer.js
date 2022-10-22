@@ -23,7 +23,7 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
             // лютый костыль, по другому никак или я туплю 
             for (let i = 0; i < cartItems.length; i++) {
                 const item = cartItems[i];
-                await axios.delete('https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart' + item.id); // for потому что при forEach awawit ждать не будет
+                await axios.delete('https://6350fd33dfe45bbd55b37a6e.mockapi.io/cart/' + item.id); // for потому что при forEach awawit ждать не будет
                 await delay(1000);
             }
         } catch (e) {
