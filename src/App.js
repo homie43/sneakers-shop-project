@@ -78,7 +78,7 @@ function App() {
   };
 
   return (
-    <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, onAddFavorite, setCartOpened}} > {/* теперь они доступны в любом компоненте внутри провайдера */}
+    <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, onAddFavorite, setCartOpened, setCartItems}} > {/* теперь они доступны в любом компоненте внутри провайдера */}
       <div className="wrapper clear">
 
         {cartOpened ? <Drawer onRemoveItemToCart={onRemoveItemToCart} items={cartItems} onCloseCart={() => setCartOpened(false)}/> : null}
