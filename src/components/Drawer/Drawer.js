@@ -1,12 +1,15 @@
 import React, {useState, useContext} from 'react';
 import axios from 'axios';
-import Info from './Info';
-import AppContext from '../context';
+import Info from '../Info';
+
+import {useCart} from '../../hooks/useCart';
+
+import styles from './Drawer.module.scss'
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
-    const {cartItems, setCartItems} = useContext(AppContext);
+const Drawer = ({onRemoveItemToCart, onCloseCart, items = [], opened}) => {
+    const {cartItems, setCartItems, totalPrice} = useCart()
     const [orderId, setOrderId] = useState(null);
     const [isOrderComplete, setIsOrderComplete] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +37,8 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
     };
 
     return (
-        <div className="overlay">
-            <div className="drawer">
+        <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+            <div className={styles.drawer}>
                 <h2 className="d-flex justify-between mb-30">Корзина <img onClick={onCloseCart} className="cu-p" src="/img/btn-remove.svg" alt="Remove" /> </h2>
 
                 {items.length > 0 ?  
@@ -55,14 +58,17 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = []}) => {
                         <div className="cartTotalBlock">
                             <ul>
                                 <li className="d-flex">
-                                    <span>Итого:</span>
+                                    <span>Итого: </span>
                                     <div></div>
-                                    <b>21 498 руб. </b>
+                                    <b>{totalPrice} руб. </b>
+                                </li>
+                                <li className="d-flex ">
+                                    <span>Доставка: 490 руб.</span>
                                 </li>
                                 <li className="d-flex">
-                                    <span>Налог 5%: </span>
+                                    <span>Вместе с доставкой: </span>
                                     <div></div>
-                                    <b>1074 руб. </b>
+                                    <b>{totalPrice + 490} руб. </b>
                                 </li>
                             </ul>
                             <button disabled={isLoading} onClick={onClickOrder} className="myButton">

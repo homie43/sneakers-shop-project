@@ -39,9 +39,11 @@ const Card = ({id, title, price, imageUrl, onPluse, onAddFavorite, favorited = f
         </ContentLoader>
         :
         <>
-          <div className={styles.favorite} onClick={onAddFavorite}>
-            <img onClick={onClickFavorite} src={isFavorite ? "/img/heart-liked.svg" : "/img/heart-unliked.svg"} alt="Unliked" />
-          </div>
+          {onAddFavorite && (
+            <div className={styles.favorite} onClick={onAddFavorite}>
+              <img onClick={onClickFavorite} src={isFavorite ? "/img/heart-liked.svg" : "/img/heart-unliked.svg"} alt="Unliked" />
+            </div>
+          )}
           <img width="100%" height={135} src={imageUrl} alt="Sneakers" />
           <h5>{title}</h5>
           <div className="d-flex justify-between align-center">
@@ -49,11 +51,14 @@ const Card = ({id, title, price, imageUrl, onPluse, onAddFavorite, favorited = f
               <span>Цена</span>
               <b>{price} руб.</b>
             </div>
-            <img 
-              className={styles.plus}
-              onClick={onClickPluse} 
-              src={isItemAdded(id) ? "/img/btn-cheked.svg" : "/img/btn-plus.svg"} 
-              alt="Plus" />
+            {onPluse && (
+              <img 
+                className={styles.plus}
+                onClick={onClickPluse} 
+                src={isItemAdded(id) ? "/img/btn-cheked.svg" : "/img/btn-plus.svg"} 
+                alt="Plus" 
+              />
+            )}
           </div>
         </>
       }
