@@ -10,5 +10,6 @@ https://homie43.github.io/sneakers-shop-project/#/
 - SCSS
 - React Context
 - React Skeleton
+- mockApi для сохранения данных о заказе
 
 Без использования Redux
