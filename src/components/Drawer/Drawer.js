@@ -39,11 +39,11 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = [], opened}) => {
     return (
         <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
             <div className={styles.drawer}>
-                <h2 className="d-flex justify-between mb-30">Корзина <img onClick={onCloseCart} className="cu-p" src="/img/btn-remove.svg" alt="Remove" /> </h2>
+                <h2 className="d-flex justify-between mb-30">Корзина <img onClick={onCloseCart} className="cu-p" src="img/btn-remove.svg" alt="Remove" /> </h2>
 
                 {items.length > 0 ?  
                     <>
-                        <div className="items">
+                        <div className="items flex">
                             {items.map((obj) => (
                                 <div key={obj.id} className="cartItem d-flex align-center mb-20">
                                     <div style={{backgroundImage: `url(${obj.imageUrl})`}} className="cartItemImg"></div>
@@ -51,7 +51,7 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = [], opened}) => {
                                         <p className="mb-5">{obj.title}</p>
                                         <b>{obj.price} руб.</b>
                                     </div>
-                                    <img onClick={() => onRemoveItemToCart(obj.id)} className="removeBtn" src="/img/btn-remove.svg" alt="Remove" />
+                                    <img onClick={() => onRemoveItemToCart(obj.id)} className="removeBtn" src="img/btn-remove.svg" alt="Remove" />
                                 </div>
                             ))} 
                         </div>
@@ -80,7 +80,7 @@ const Drawer = ({onRemoveItemToCart, onCloseCart, items = [], opened}) => {
                     <Info 
                         title={isOrderComplete ? "Заказ оформлен" : "Корзина пустая" }
                         description={isOrderComplete ? `Ваш заказ ${orderId} скоро будет передан курьерской доставке` : "Добавьте хотя бы одну пару кроссовок"} 
-                        image={isOrderComplete ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"}
+                        image={isOrderComplete ? "img/complete-order.jpg" : "img/empty-cart.jpg"}
                     />
                 }
 

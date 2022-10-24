@@ -24,7 +24,7 @@ const Home = ({items, searchValue, onChangeSearchInput, onAddFavorite, onAddToCa
             <div className="d-flex align-center justify-between mb-40">
                 <h1 className="mb-40">{searchValue ? `Поиск по запросу: ${searchValue}` : 'Все кроссовки'}</h1>
                 <div className="search-block">
-                    <img src="/img/search.svg" alt="Search" />
+                    <img src="img/search.svg" alt="Search" />
                     <input onChange={onChangeSearchInput} placeholder="Поиск..." />
                 </div>
             </div>

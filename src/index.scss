@@ -97,8 +97,8 @@ header {
 }
 
 .cartTotalBlock {
-  margin-top: auto;
-  margin-bottom: 5px;
+  // margin-top: auto;
+  // margin-bottom: 5px;
   ul {
     display: block;
     margin-bottom: 40px !important;
@@ -138,6 +138,7 @@ header {
       top: 20px;
       transition: transform 0.15s ease-in-out;
     }
+
   }
 }
 
@@ -165,6 +166,8 @@ header {
   &:active {
     background: darken(#45564e, 5%);
   }
+  
+  
 }
 
 .cartItem {
