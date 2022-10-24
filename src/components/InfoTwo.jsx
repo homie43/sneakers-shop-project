@@ -8,7 +8,7 @@ const InfoTwo = ({title, description, image}) => {
             <h2 className="mb-5" >{title}</h2>
             <p className="opacity-6 mb-20">{description}</p>
             <button style={{'width': 245}} className="myButton mb-50">
-                <Link to="/">
+                <Link to="/sneakers-shop-project">
                   <img src="img/arrow.svg" alt="Arrow" />
                   Вернуться назад
                 </Link>

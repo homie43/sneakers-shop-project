@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Drawer from "./components/Drawer/Drawer";
 import Header from "./components/Header";
@@ -122,7 +122,7 @@ function App() {
 
         <Header onClickCart={() => setCartOpened(true)} />
         
-        <Route path="/" exact>
+        <Route path="" exact>
           <Home 
             items={items}
             cartItems={cartItems} 
@@ -135,11 +135,11 @@ function App() {
           />
         </Route>
 
-        <Route path="/favorites" >
+        <Route path="favorites" >
           <Favorites />
         </Route>
 
-        <Route path="/orders" >
+        <Route path="orders" >
           <Orders items={cartItems}/>
         </Route>
         
