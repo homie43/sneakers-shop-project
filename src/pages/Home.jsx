@@ -29,7 +29,7 @@ const Home = ({items, searchValue, onChangeSearchInput, onAddFavorite, onAddToCa
                 </div>
             </div>
 
-            <div className="d-flex flex-wrap">{renderItems()}</div>
+            <div className="d-flex flex-wrap justify-center">{renderItems()}</div>
       </div>
     );
 };
