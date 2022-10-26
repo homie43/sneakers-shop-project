@@ -31,7 +31,7 @@ const Favorites = () => {
         :
         <InfoTwo 
           title={'Избранного нет ;('}
-          description={'Добавьте хотя бы что-нибуь в избранное'}
+          description={'Добавьте хотя бы что-нибудь в избранное'}
           image={'img/memo-2.jpg'}  
         />
       }
