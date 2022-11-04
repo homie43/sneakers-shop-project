@@ -78,8 +78,10 @@ header {
     margin: 0;
   }
 
-  &-header {
-    flex-direction: column;
+  @media (max-width: 720px) {
+    &-header {
+      flex-direction: column;
+    }
   }
 }
 
